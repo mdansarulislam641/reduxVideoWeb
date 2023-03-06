@@ -7,9 +7,11 @@ const VideoGrid = () => {
     const dispatch = useDispatch();
     const videosData = useSelector((state)=>state.videos);
     const {isError , error , loading , videos: videos} = videosData ;
+    const {selectedTags:searchTags, searchText} = useSelector(state => state.selectedTag);
+
     useEffect(()=>{
-        dispatch(videosAsync())
-    },[dispatch]);
+        dispatch(videosAsync({searchTags , searchText}))
+    },[dispatch,searchTags,searchText]);
 
     let content ;
     if(loading) content = <Loading/>

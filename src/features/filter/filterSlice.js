@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // initialState 
 const initialState = {
     selectedTags : [],
-    searchText : 'hel'
+    searchText : ''
 };
 
 // storage slice 
@@ -27,4 +27,4 @@ const filterSlice = createSlice({
 });
 
 export default filterSlice.reducer ;
-export const {selectTag , removeTag } = filterSlice.actions ;
+export const {selectTag , removeTag , searchFilter} = filterSlice.actions ;
