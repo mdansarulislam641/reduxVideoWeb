@@ -1,44 +1,30 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect }  from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { relatedVideosFetchAsync } from '../../features/relatedVideo/relatedVideoSlice';
+import Loading from '../ui/Loading';
+import RelatedVideosItem from './RelatedVideosItem';
 
-const RelatedVideo = () => {
+const RelatedVideo = ({tags , relatedVideoId :id}) => {
+    
+const dispatch = useDispatch();
+const {relatedVideos , loading , isError , error} = useSelector(state => state.relatedVideos);
+console.log(relatedVideos)
+    useEffect(()=>{
+        dispatch(relatedVideosFetchAsync({id , tags}))
+    },[dispatch, id , tags]);
+
+    let content = null ;
+    if(loading) content = <Loading/>
+    if(!loading && isError) content = <div>{error}</div>;
+    if(!loading && !isError && !relatedVideos?.length > 0) content = <div>No Videos Found!!!</div>
+    if(!loading && !isError && relatedVideos.length > 0) content = relatedVideos.map(video =>  <RelatedVideosItem video={video} key={video.id}/>)
+
+
     return (
-        <div className="w-full flex flex-row gap-2 mb-4">
         <div
-            className="relative w-[168px] h-[94px] flex-none duration-300 hover:scale-[1.03]"
-        >
-            <Link to="/videos/1">
-                <img
-                    src="https://i3.ytimg.com/vi/6O4s7v28nlw/maxresdefault.jpg"
-                    className="object-cover"
-                    alt="Some video title"
-                />
-            </Link>
-            <p
-                className="absolute right-2 bottom-2 bg-gray-900 text-gray-100 text-xs px-1 py"
-            >
-                12:10
-            </p>
-        </div>
-
-        <div className="flex flex-col w-full">
-            <Link to="/videos/1">
-                <p
-                    className="text-slate-900 text-sm font-semibold"
-                >
-                    Some video title
-                </p>
-            </Link>
-            <Link to="/videos/1"  className="text-gray-400 text-xs mt-2 hover:text-gray-600">
-               
-              
-           
-                Learn with Sumit
-                </Link>
-            <p className="text-gray-400 text-xs mt-1">
-                100K views . 23 Oct 2022
-            </p>
-        </div>
+        class="col-span-full lg:col-auto max-h-[570px] overflow-y-auto"
+    >
+       {content}
     </div>
     );
 };
