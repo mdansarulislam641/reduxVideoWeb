@@ -5,7 +5,7 @@ import Tag from './Tag';
 const Tags = () => {
     const {tags} = useSelector((state)=> state.tags)
     const dispatch = useDispatch();
-    console.log(tags)
+
     useEffect(()=>{
         dispatch(tagsFetchAsync())
     },[dispatch])
